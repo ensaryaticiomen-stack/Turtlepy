@@ -2,54 +2,142 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kaplumbağa Oyunu</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  body {
-    margin:0;
-    padding:0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #00c6ff, #0072ff);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
-    color: white;
-  }
-  h1 {
-    margin-bottom: 40px;
-    font-size: 48px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    text-align: center;
-  }
-  button {
-    font-size: 20px;
-    padding: 15px 30px;
-    background-color: blue;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 20px;
-  }
-  a.download-link {
-    text-decoration: none;
-    color: green;
-    font-size: 20px;
-  }
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Roboto', sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  background: radial-gradient(circle at 50% 50%, #1a2a6c, #000);
+  overflow: hidden;
+  color: white;
+  position: relative;
+}
+
+/* Yıldız/partikül animasyonu */
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 3s infinite ease-in-out alternate;
+}
+
+@keyframes twinkle {
+  0% { opacity:0.1; transform: scale(0.5); }
+  50%{ opacity:0.8; transform: scale(1.2);}
+  100%{ opacity:0.2; transform: scale(0.8);}
+}
+
+/* Başlık */
+h1 {
+  font-size: 4rem;
+  margin-bottom: 50px;
+  text-shadow: 2px 2px 25px rgba(255,255,255,0.7);
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 20px #fff, 0 0 30px #00ffcc; }
+  to   { text-shadow: 0 0 40px #fff, 0 0 60px #00ffcc; }
+}
+
+/* Butonlar */
+button {
+  background-color: #ff6600;
+  color: #fff;
+  border: none;
+  padding: 18px 45px;
+  font-size: 1.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s;
+  box-shadow: 0 0 15px rgba(255,102,0,0.7);
+}
+button::before {
+  content:'';
+  position:absolute;
+  top:0; left:-75%;
+  width:50%; height:100%;
+  background: rgba(255,255,255,0.2);
+  transform: skewX(-25deg);
+  transition: 0.5s;
+}
+button:hover::before { left:125%; }
+button:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255,102,0,1); }
+
+/* Link */
+a.download-link {
+  margin-top: 15px;
+  font-size: 1.3rem;
+  color: #00ffcc;
+  text-decoration: none;
+  transition: 0.3s;
+}
+a.download-link:hover { color:#00cc99; text-shadow: 0 0 10px #00cc99; }
+
+/* Başka oyunlar paneli */
+#otherGames {
+  margin-top: 25px;
+  font-size: 1.2rem;
+  display: none;
+  color: #ffff66;
+  transition: all 0.5s ease;
+}
+
+/* Responsive */
+@media(max-width:700px){
+  h1{ font-size:2.5rem; margin-bottom:35px;}
+  button{ font-size:1.2rem; padding:14px 30px;}
+  a.download-link{ font-size:1rem;}
+  #otherGames{ font-size:1rem;}
+}
 </style>
 </head>
 <body>
 
 <h1>Kaplumbağa Oyunu</h1>
 
-<!-- Buton ile JS indiriyor -->
 <button id="downloadBtn">Oyunu İndir</button>
+<button id="otherGamesBtn">Başka Oyunlar</button>
 
-<!-- Görünen link -->
-<p><a href="https://Engames/Turtlepy.com" class="download-link">Engames/Kaplumbağa Oyunu</a></p>
+<p><a href="#" class="download-link">Engames/Kaplumbağa Oyunu</a></p>
+
+<div id="otherGames">Başka oyun şimdilik yok, çalışmalar devam ediyor.</div>
 
 <script src="download.js"></script>
+<script>
+  // Başka Oyunlar butonu
+  document.getElementById('otherGamesBtn').addEventListener('click', function(){
+      const otherGames = document.getElementById('otherGames');
+      otherGames.style.display = 'block';
+  });
+
+  // Yıldız/partikül oluşturma
+  for(let i=0;i<100;i++){
+    const star = document.createElement('div');
+    star.className='star';
+    star.style.top=Math.random()*100+'%';
+    star.style.left=Math.random()*100+'%';
+    star.style.width=Math.random()*3+1+'px';
+    star.style.height=star.style.width;
+    star.style.animationDuration=2+Math.random()*3+'s';
+    document.body.appendChild(star);
+  }
+</script>
 
 </body>
 </html>
+
+
