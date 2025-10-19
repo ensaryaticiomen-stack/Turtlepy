@@ -6,125 +6,220 @@
 <title>Kaplumbağa Oyunu — Engames</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    font-family: "Roboto", sans-serif;
-    background: black; /* mavi boşluk yok */
-    color: white;
+  :root{
+    --accent:#00f0d0;
+    --warm:#ff8a00;
+    --bg1:#020617;
+    --bg2:#0b2238;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%; width:100%; margin:0; padding:0; overflow:hidden;}
+  body{
+    font-family:"Roboto",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: radial-gradient(1500px 800px at 10% 20%, rgba(10,10,30,0.6), transparent),
+                radial-gradient(1000px 500px at 90% 80%, rgba(20,40,80,0.35), transparent),
+                linear-gradient(180deg,var(--bg1),var(--bg2));
+    color:#fff;
+    padding:0; /* tam ekran */
   }
 
-  #particleCanvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
+  .stage{
+    width:100%;
+    height:100%; /* tam ekran */
+    border-radius:0; /* köşe yok, tam ekran */
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    box-shadow:0 20px 60px rgba(2,6,20,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
+    position:relative;
+    overflow:hidden;
+    padding:36px;
+    display:grid;
+    grid-template-columns:1fr 420px;
+    gap:28px;
   }
 
-  .stage {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: 28px;
-    width: min(1100px, 96%);
-    max-width: 1200px;
-    min-height: 560px;
-    padding: 36px;
+  .left{
+    padding:10px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    align-items:flex-start;
   }
 
-  .left {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    align-items: flex-start;
-  }
-
-  h1 {
+  h1{
     font-size: clamp(28px, 4vw, 56px);
-    margin: 0;
-    color: #00f0d0;
+    line-height:1;
+    margin:0;
+    letter-spacing: -1px;
+    color: #e6fbff;
+    text-shadow:0 0 8px rgba(0,240,208,0.12), 0 0 30px rgba(0,200,180,0.06);
   }
 
-  .actions {
-    display: flex;
-    gap: 14px;
-    margin-top: 8px;
+  p.lead{
+    margin:0;
+    color:rgba(255,255,255,0.85);
+    max-width:70%;
   }
 
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    background: linear-gradient(180deg,#ff8a00,#ff5e00);
-    color: white;
-    border: none;
-    padding: 14px 22px;
-    border-radius: 12px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: transform .18s ease;
+  .actions{
+    display:flex;
+    gap:14px;
+    align-items:center;
+    margin-top:8px;
   }
 
-  .btn:hover { transform: scale(1.05); }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    background:linear-gradient(180deg,var(--warm),#ff5e00);
+    color:white;
+    border:none;
+    padding:14px 22px;
+    border-radius:12px;
+    font-size:1rem;
+    cursor:pointer;
+    box-shadow:0 6px 24px rgba(255,120,30,0.18), 0 1px 0 rgba(255,255,255,0.06) inset;
+    transition: transform .18s ease, box-shadow .18s ease;
+    position:relative;
+    overflow:hidden;
+  }
+  .btn::before{
+    content:'';
+    position:absolute;
+    top:0; left:-75%;
+    width:50%; height:100%;
+    background: rgba(255,255,255,0.2);
+    transform:skewX(-25deg);
+    transition:0.5s;
+  }
+  .btn:hover::before{ left:125%; }
+  .btn:hover{ transform: scale(1.05); box-shadow:0 0 30px rgba(255,102,0,1); }
 
-  .right {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+  .ghost{
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.08);
+    color:var(--accent);
+    box-shadow:none;
   }
 
-  .card {
-    background: rgba(255,255,255,0.02);
-    border-radius: 12px;
-    padding: 16px;
-    display: flex;
-    gap: 12px;
-    align-items: center;
+  .right{
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    align-items:stretch;
   }
 
-  .game-preview {
-    width: 86px;
-    height: 86px;
-    border-radius: 12px;
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px;
+    padding:16px;
+    box-shadow:0 8px 30px rgba(0,0,0,0.6);
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+
+  .game-preview{
+    width:86px; height:86px; border-radius:12px;
     background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 18px;
-    color: #fff;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:18px; color:#fff;
+    box-shadow: inset 0 -6px 18px rgba(0,0,0,0.35);
   }
 
-  .meta h3 { margin: 0 0 6px 0; font-size: 1rem; }
-  .meta p { margin: 0; color: rgba(255,255,255,0.65); font-size: 0.9rem; }
+  .meta { flex:1;}
+  .meta h3{ margin:0 0 6px 0; font-size:1rem }
+  .meta p{ margin:0; color:rgba(255,255,255,0.65); font-size:0.9rem }
 
-  .other-games { margin-top: 8px; display: grid; gap: 10px; }
-  .game-card:hover { transform: translateY(-6px); }
+  .other-games{
+    margin-top:8px;
+    display:grid;
+    gap:10px;
+  }
 
-  footer { position: absolute; left: 18px; bottom: 12px; font-size: 12px; color: rgba(255,255,255,0.45); }
+  .game-card {
+    display:flex; gap:10px; align-items:center;
+    padding:10px; border-radius:10px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+    transition: transform .25s ease, box-shadow .25s ease;
+    cursor:pointer;
+  }
+  .game-card:hover{ transform: translateY(-6px); box-shadow:0 14px 40px rgba(0,0,0,0.6); }
+  .game-thumb{ width:56px; height:56px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:700;}
+
+  .no-games {
+    padding:14px; border-radius:10px; background:rgba(255,255,255,0.02);
+    color: #ffeaa7; font-weight:500;
+  }
+
+  .galaxy {
+    position:absolute;
+    right:-120px; top:-120px;
+    width:700px; height:700px;
+    pointer-events:none;
+    transform: rotate(10deg);
+    mix-blend-mode: screen;
+    opacity:0.55;
+  }
+  .ring {
+    position:absolute; inset:0; border-radius:50%;
+    border:1px solid rgba(0,200,180,0.08);
+    box-shadow: 0 0 120px rgba(0,200,180,0.06), inset 0 0 40px rgba(0,240,208,0.02);
+    animation: spin 40s linear infinite;
+  }
+  .ring.r2{ transform: scale(0.75); animation-duration:60s; opacity:0.9; border-color:rgba(200,150,255,0.06); }
+  .ring.r3{ transform: scale(0.5); animation-duration:90s; opacity:0.7; border-color:rgba(255,220,120,0.04); }
+  @keyframes spin{ from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+  #particleCanvas{
+    position:absolute; inset:0; width:100%; height:100%; pointer-events:none;
+  }
+
+  .burst {
+    position:absolute; width:12px; height:12px; border-radius:50%;
+    background: radial-gradient(circle, #fff, rgba(255,255,255,0.4));
+    pointer-events:none; mix-blend-mode: screen;
+    will-change: transform, opacity;
+  }
+
+  footer{
+    position:absolute; left:18px; bottom:12px; font-size:12px; color:rgba(255,255,255,0.45);
+  }
+
+  @media (max-width:920px){
+    .stage{ grid-template-columns: 1fr; padding:20px; min-height:100% }
+    .right{ order: -1 }
+    .galaxy{ display:none }
+    .left p.lead{ max-width:100% }
+  }
 </style>
 </head>
 <body>
+<div class="stage" id="stage">
 
-<canvas id="particleCanvas"></canvas>
+  <canvas id="particleCanvas"></canvas>
 
-<div class="stage">
+  <div class="galaxy" aria-hidden="true">
+    <div class="ring r1"></div>
+    <div class="ring r2"></div>
+    <div class="ring r3"></div>
+  </div>
+
   <div class="left">
-    <h1>Kaplumbağa Oyunu</h1>
+    <h1 id="title">Kaplumbağa Oyunu</h1>
+    <p class="lead">Oyun paketini indir, çalıştır ve keyfini çıkar.</p>
+
     <div class="actions">
-      <button class="btn" id="downloadBtn">Oyunu İndir</button>
-      <button class="btn" id="otherGamesBtn">Başka Oyunlar</button>
-      <button class="btn" id="previewBtn">Önizleme</button>
+      <button class="btn btn-primary btn-download btn" id="downloadBtn">Oyunu İndir</button>
+      <button class="btn ghost" id="otherGamesBtn">Başka Oyunlar</button>
+      <button class="btn ghost" id="previewBtn">Önizleme</button>
     </div>
-    <div id="log"></div>
+
+    <div id="log" style="color:rgba(255,255,255,0.65); font-size:0.95rem; margin-top:10px;"></div>
   </div>
 
   <div class="right">
@@ -132,60 +227,94 @@
       <div class="game-preview">Turtle</div>
       <div class="meta">
         <h3>Kaplumbağa Oyunu</h3>
-        <p>Klasik Turtle tabanlı Python oyunu.</p>
+        <p>Klasik Turtle tabanlı oyunun Python sürümü. İndir, çalıştır, oynat.</p>
       </div>
     </div>
+
     <div class="other-games" id="otherGamesList"></div>
     <div class="card no-games" id="noGamesMsg">Başka oyun şimdilik yok — çalışmalar devam ediyor 🛠️</div>
   </div>
-</div>
 
-<footer>© Engames</footer>
+  <footer>© Engames</footer>
+</div>
 
 <script src="download.js"></script>
 <script>
-// Basit tam ekran “yıldız” efekti (sadece hareketli noktalar)
+// Particle System
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let W = canvas.width = window.innerWidth;
 let H = canvas.height = window.innerHeight;
 
-class Star {
-  constructor() { this.reset(); }
-  reset() {
-    this.x = Math.random() * W;
-    this.y = Math.random() * H;
-    this.r = Math.random() * 1.5;
-    this.vx = (Math.random() - 0.5) * 0.2;
-    this.vy = (Math.random() - 0.5) * 0.2;
+class Particle {
+  constructor(layer){
+    this.layer = layer;
+    this.reset();
   }
-  update() {
-    this.x += this.vx; this.y += this.vy;
-    if(this.x < 0) this.x = W;
-    if(this.x > W) this.x = 0;
-    if(this.y < 0) this.y = H;
-    if(this.y > H) this.y = 0;
+  reset(){
+    this.x = Math.random()*W;
+    this.y = Math.random()*H;
+    this.r = Math.random()*(1+this.layer*1.5)+0.5;
+    this.vx = (Math.random()-0.5)*(0.1+this.layer*0.1);
+    this.vy = (Math.random()-0.5)*(0.1+this.layer*0.1);
+    this.life = Math.random()*200+100;
+    this.alpha = 0.2 + this.layer*0.2;
   }
-  draw() {
+  update(){
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life--;
+    if(this.x<-50)this.x=W+50;
+    if(this.x>W+50)this.x=-50;
+    if(this.y<-50)this.y=H+50;
+    if(this.y>H+50)this.y=-50;
+    if(this.life<=0)this.reset();
+  }
+  draw(){
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
-    ctx.fillStyle = "white";
+    ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${this.alpha})`;
     ctx.fill();
   }
 }
 
-const stars = [];
-for(let i=0;i<200;i++) stars.push(new Star());
-
-function animate() {
-  ctx.clearRect(0,0,W,H);
-  for(let s of stars){ s.update(); s.draw(); }
-  requestAnimationFrame(animate);
+const particles = [];
+for(let l=1;l<=3;l++){
+  let count = l===3?150:250;
+  for(let i=0;i<count;i++){
+    particles.push(new Particle(l));
+  }
 }
-animate();
 
-window.addEventListener('resize', () => { W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; });
+function drawParticles(){
+  ctx.clearRect(0,0,W,H);
+  for(let p of particles){
+    p.update();
+    p.draw();
+  }
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+window.addEventListener('resize', ()=>{
+  W=canvas.width=window.innerWidth;
+  H=canvas.height=window.innerHeight;
+});
+
+// Buttons
+document.getElementById('downloadBtn').addEventListener('click',()=>{
+  const link = document.createElement('a');
+  link.href = 'Turtle.py';
+  link.download = 'Kaplumbaga_Oyunu.py';
+  link.click();
+});
+
+document.getElementById('otherGamesBtn').addEventListener('click',()=>{
+  document.getElementById('noGamesMsg').style.display='block';
+});
+
+document.getElementById('previewBtn').addEventListener('click',()=>{
+  document.getElementById('log').textContent='Önizleme başlatıldı...';
+});
 </script>
-
 </body>
 </html>
