@@ -159,32 +159,95 @@
   .ring.r2{ transform: scale(0.75); animation-duration:60s; opacity:0.9; border-color:rgba(200,150,255,0.06); }
   .ring.r3{ transform: scale(0.5); animation-duration:90s; opacity:0.7; border-color:rgba(255,220,120,0.04); }
   @keyframes spin{ from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-  #particleCanvas{
-    position:absolute; inset:0; width:100%; height:100%; pointer-events:none;
+
+  /* Sabit yıldızlar yanıp sönecek */
+  .star {
+    position:absolute;
+    width:2px; height:2px;
+    background:white;
+    border-radius:50%;
+    opacity:0.5;
+    animation: blink 1.5s infinite alternate;
   }
+  @keyframes blink {
+    from {opacity:0.1;}
+    to {opacity:1;}
+  }
+
   footer{
     position:absolute; left:18px; bottom:12px; font-size:12px; color:rgba(255,255,255,0.45);
-  }
-  @media (max-width:920px){
-    .stage{ grid-template-columns: 1fr; padding:20px; min-height:100% }
-    .right{ order: -1 }
-    .galaxy{ display:none }
-    .left p.lead{ max-width:100% }
   }
 </style>
 </head>
 <body>
 <div class="stage" id="stage">
-  <canvas id="particleCanvas"></canvas>
+
+  <!-- Sabit yanıp sönen yıldızlar -->
+  <div id="stars"></div>
+
   <div class="galaxy" aria-hidden="true">
     <div class="ring r1"></div>
     <div class="ring r2"></div>
     <div class="ring r3"></div>
   </div>
+
   <div class="left">
     <h1 id="title">Kaplumbağa Oyunu</h1>
     <p class="lead">Oyun paketini indir, çalıştır ve keyfini çıkar.</p>
+
     <div class="actions">
       <button class="btn btn-primary btn-download btn" id="downloadBtn">Oyunu İndir</button>
       <button class="btn ghost" id="otherGamesBtn">Başka Oyunlar</button>
-      <button class="btn ghost"
+      <button class="btn ghost" id="previewBtn">Önizleme</button>
+    </div>
+
+    <div id="log" style="color:rgba(255,255,255,0.65); font-size:0.95rem; margin-top:10px;"></div>
+  </div>
+
+  <div class="right">
+    <div class="card">
+      <div class="game-preview">Turtle</div>
+      <div class="meta">
+        <h3>Kaplumbağa Oyunu</h3>
+        <p>Klasik Turtle tabanlı oyunun Python sürümü. İndir, çalıştır, oynat.</p>
+      </div>
+    </div>
+
+    <div class="other-games" id="otherGamesList"></div>
+    <div class="card no-games" id="noGamesMsg">Başka oyun şimdilik yok — çalışmalar devam ediyor 🛠️</div>
+  </div>
+
+  <footer>© Engames</footer>
+</div>
+
+<script>
+// Yıldızları oluştur
+const starsContainer = document.getElementById('stars');
+for(let i=0;i<100;i++){
+  const star = document.createElement('div');
+  star.classList.add('star');
+  star.style.top = Math.random()*100 + '%';
+  star.style.left = Math.random()*100 + '%';
+  star.style.width = star.style.height = (Math.random()*2 + 1) + 'px';
+  star.style.animationDuration = (Math.random()*2 + 1) + 's';
+  starsContainer.appendChild(star);
+}
+
+// Buttons
+document.getElementById('downloadBtn').addEventListener('click',()=>{
+  const link = document.createElement('a');
+  link.href = 'Turtle.py';
+  link.download = 'Kaplumbaga_Oyunu.py';
+  link.click();
+});
+
+document.getElementById('otherGamesBtn').addEventListener('click',()=>{
+  document.getElementById('noGamesMsg').style.display='block';
+});
+
+document.getElementById('previewBtn').addEventListener('click',()=>{
+  document.getElementById('log').textContent='Önizleme başlatıldı...';
+});
+</script>
+</body>
+</html>
