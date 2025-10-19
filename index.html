@@ -126,15 +126,6 @@ p.lead{
   display:grid;
   gap:10px;
 }
-.game-card {
-  display:flex; gap:10px; align-items:center;
-  padding:10px; border-radius:10px;
-  background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
-  transition: transform .25s ease, box-shadow .25s ease;
-  cursor:pointer;
-}
-.game-card:hover{ transform: translateY(-6px); box-shadow:0 14px 40px rgba(0,0,0,0.6); }
-.game-thumb{ width:56px; height:56px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:700;}
 .no-games {
   padding:14px; border-radius:10px; background:rgba(255,255,255,0.02);
   color: #ffeaa7; font-weight:500;
@@ -201,7 +192,7 @@ footer{
 </div>
 
 <script>
-// Particle System – yıldızlar ve galaksi
+// Particle System
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let W = canvas.width = window.innerWidth;
@@ -261,7 +252,7 @@ window.addEventListener('resize', ()=>{
   H=canvas.height=window.innerHeight;
 });
 
-// Python dosyasını indir – CMD kapanmadan bekletir
+// Python dosyası indir – CMD kapanmadan bekletir
 document.getElementById('downloadBtn').addEventListener('click', ()=>{
   const pyCode = `print("Kaplumbağa Oyunu başladı!")\ninput("Çıkmak için Enter'a basın...")`;
   const blob = new Blob([pyCode], {type:'text/plain'});
