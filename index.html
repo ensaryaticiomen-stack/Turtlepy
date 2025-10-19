@@ -189,7 +189,7 @@ footer{
 </div>
 
 <script>
-// Particle sistemi (parlayan yıldızlar)
+// Particle sistemi (sabit yıldızlar, yanıp sönme)
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let W = canvas.width = window.innerWidth;
@@ -204,20 +204,14 @@ class Particle {
     this.x = Math.random()*W;
     this.y = Math.random()*H;
     this.r = Math.random()*(1+this.layer*1.5)+0.5;
-    this.vx = (Math.random()-0.5)*(0.1+this.layer*0.1);
-    this.vy = (Math.random()-0.5)*(0.1+this.layer*0.1);
-    this.life = Math.random()*200+100;
     this.alpha = 0.2 + this.layer*0.2;
+    this.delta = Math.random()*0.02 + 0.005; // yanıp sönme hızı
+    this.alphaDir = 1;
   }
   update(){
-    this.x += this.vx;
-    this.y += this.vy;
-    this.life--;
-    if(this.x<-50)this.x=W+50;
-    if(this.x>W+50)this.x=-50;
-    if(this.y<-50)this.y=H+50;
-    if(this.y>H+50)this.y=-50;
-    if(this.life<=0)this.reset();
+    this.alpha += this.delta * this.alphaDir;
+    if(this.alpha >= 1){ this.alphaDir = -1; this.alpha = 1; }
+    if(this.alpha <= 0.2){ this.alphaDir = 1; this.alpha = 0.2; }
   }
   draw(){
     ctx.beginPath();
