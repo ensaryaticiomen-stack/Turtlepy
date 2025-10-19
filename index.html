@@ -16,9 +16,6 @@
   html,body{height:100%; width:100%; margin:0; padding:0; overflow:hidden;}
   body{
     font-family:"Roboto",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-    display:flex;
-    align-items:center;
-    justify-content:center;
     background: radial-gradient(1500px 800px at 10% 20%, rgba(10,10,30,0.6), transparent),
                 radial-gradient(1000px 500px at 90% 80%, rgba(20,40,80,0.35), transparent),
                 linear-gradient(180deg,var(--bg1),var(--bg2));
@@ -27,16 +24,16 @@
 
   .stage{
     width:100%;
-    height:100%; /* tam ekran */
+    height:100%;
     border-radius:0;
     background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
     box-shadow:0 20px 60px rgba(2,6,20,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
     position:relative;
     overflow:hidden;
+    padding:36px;
     display:grid;
     grid-template-columns:1fr 420px;
     gap:28px;
-    padding:36px;
   }
 
   .left{
@@ -215,89 +212,3 @@
     <div class="actions">
       <button class="btn btn-primary btn-download btn" id="downloadBtn">Oyunu İndir</button>
       <button class="btn ghost" id="otherGamesBtn">Başka Oyunlar</button>
-      <button class="btn ghost" id="previewBtn">Önizleme</button>
-    </div>
-
-    <div id="log" style="color:rgba(255,255,255,0.65); font-size:0.95rem; margin-top:10px;"></div>
-  </div>
-
-  <div class="right">
-    <div class="card">
-      <div class="game-preview">Turtle</div>
-      <div class="meta">
-        <h3>Kaplumbağa Oyunu</h3>
-        <p>Klasik Turtle tabanlı oyunun Python sürümü. İndir, çalıştır, oynat.</p>
-      </div>
-    </div>
-
-    <div class="other-games" id="otherGamesList"></div>
-    <div class="card no-games" id="noGamesMsg">Başka oyun şimdilik yok — çalışmalar devam ediyor 🛠️</div>
-  </div>
-
-  <footer>© Engames</footer>
-</div>
-
-<script src="download.js"></script>
-<script>
-// Particle System
-const canvas = document.getElementById('particleCanvas');
-const ctx = canvas.getContext('2d');
-let W = canvas.width = window.innerWidth;
-let H = canvas.height = window.innerHeight;
-
-class Particle {
-  constructor(layer){
-    this.layer = layer;
-    this.reset();
-  }
-  reset(){
-    this.x = Math.random()*W;
-    this.y = Math.random()*H;
-    this.r = Math.random()*(1+this.layer*1.5)+0.5;
-    this.vx = (Math.random()-0.5)*(0.1+this.layer*0.1);
-    this.vy = (Math.random()-0.5)*(0.1+this.layer*0.1);
-    this.life = Math.random()*200+100;
-    this.alpha = 0.2 + this.layer*0.2;
-  }
-  update(){
-    this.x += this.vx;
-    this.y += this.vy;
-    this.life--;
-    if(this.x<-50)this.x=W+50;
-    if(this.x>W+50)this.x=-50;
-    if(this.y<-50)this.y=H+50;
-    if(this.y>H+50)this.y=-50;
-    if(this.life<=0)this.reset();
-  }
-  draw(){
-    ctx.beginPath();
-    ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
-    ctx.fillStyle=`rgba(255,255,255,${this.alpha})`;
-    ctx.fill();
-  }
-}
-
-const particles = [];
-for(let l=1;l<=3;l++){
-  let count = l===3?150:250;
-  for(let i=0;i<count;i++){
-    particles.push(new Particle(l));
-  }
-}
-
-function drawParticles(){
-  ctx.clearRect(0,0,W,H);
-  for(let p of particles){
-    p.update();
-    p.draw();
-  }
-  requestAnimationFrame(drawParticles);
-}
-drawParticles();
-window.addEventListener('resize', ()=>{
-  W=canvas.width=window.innerWidth;
-  H=canvas.height=window.innerHeight;
-});
-</script>
-</body>
-</html>
