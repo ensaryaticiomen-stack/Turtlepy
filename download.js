@@ -1,9 +1,7 @@
-// download.js — same folder as index.html
+// download.js — aynı klasörde index.html ile
 document.getElementById('downloadBtn').addEventListener('click', function() {
-    // Python kodunu buraya string olarak koy
+    // Kaplumbağa oyunu Python kodu
     const pyCode = `import turtle
-
-import turtle
 import math
 import time
 
@@ -179,17 +177,17 @@ while True:
     wn.update()
     time.sleep(0.02)
 
-`;
+# --- CMD kapanmasın ---
+input("Oyunu bitirdin, kapatmak için Enter'a bas...")`;
 
-    // Blob oluştur ve indirme linki oluştur
+    // Blob oluştur ve indir
     const blob = new Blob([pyCode], { type: 'text/plain' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'KaplumbagaOyunu.py';
+    a.download = 'Kaplumbaga_Oyunu.py';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
 });
-
