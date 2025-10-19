@@ -1,2 +1,1 @@
-# Turtlepy
-Bu bir kaplumbağa oyunudur kendim yaptım sizin için indirirseniz sevinirim
+Bu Engames için güzel bir projedir denemenizi tavsiye ederim 
