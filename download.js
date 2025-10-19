@@ -1,7 +1,6 @@
-// download.js — aynı klasörde index.html ile
-document.getElementById('downloadBtn').addEventListener('click', function() {
-    // Kaplumbağa oyunu Python kodu
-    const pyCode = `import turtle
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  const pythonCode = `
+import turtle
 import math
 import time
 
@@ -141,17 +140,14 @@ def key_release_t2_right(): keys_t2.update({"right": False})
 
 # --- Tuş atamaları ---
 wn.listen()
-# T1
 wn.onkeypress(key_press_t1_up, "w"); wn.onkeyrelease(key_release_t1_up, "w")
 wn.onkeypress(key_press_t1_down, "s"); wn.onkeyrelease(key_release_t1_down, "s")
 wn.onkeypress(key_press_t1_left, "a"); wn.onkeyrelease(key_release_t1_left, "a")
 wn.onkeypress(key_press_t1_right, "d"); wn.onkeyrelease(key_release_t1_right, "d")
-# T2
 wn.onkeypress(key_press_t2_up, "Up"); wn.onkeyrelease(key_release_t2_up, "Up")
 wn.onkeypress(key_press_t2_down, "Down"); wn.onkeyrelease(key_release_t2_down, "Down")
 wn.onkeypress(key_press_t2_left, "Left"); wn.onkeyrelease(key_release_t2_left, "Left")
 wn.onkeypress(key_press_t2_right, "Right"); wn.onkeyrelease(key_release_t2_right, "Right")
-
 wn.onkeypress(restart_game, "space")
 
 # --- Başlangıç ---
@@ -161,33 +157,28 @@ show_score()
 # --- Oyun döngüsü ---
 while True:
     if not game_over:
-        # T1 hareket
         if keys_t1["up"]: t1.setheading(90); t1.forward(speed_step)
         if keys_t1["down"]: t1.setheading(270); t1.forward(speed_step)
         if keys_t1["left"]: t1.setheading(180); t1.forward(speed_step)
         if keys_t1["right"]: t1.setheading(0); t1.forward(speed_step)
-        # T2 hareket
         if keys_t2["up"]: t2.setheading(90); t2.forward(speed_step)
         if keys_t2["down"]: t2.setheading(270); t2.forward(speed_step)
         if keys_t2["left"]: t2.setheading(180); t2.forward(speed_step)
         if keys_t2["right"]: t2.setheading(0); t2.forward(speed_step)
-        # Diş ve balon güncelle
         update_teeth_and_balloons()
         check_collision()
     wn.update()
     time.sleep(0.02)
 
-# --- CMD kapanmasın ---
-input("Oyunu bitirdin, kapatmak için Enter'a bas...")`;
+# CMD kapanmasını engelle
+input("Oyunu kapatmak için Enter tuşuna basın...")
+`;
 
-    // Blob oluştur ve indir
-    const blob = new Blob([pyCode], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'Kaplumbaga_Oyunu.py';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
+  const blob = new Blob([pythonCode], {type: 'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Kaplumbaga_Oyunu.py';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 });
