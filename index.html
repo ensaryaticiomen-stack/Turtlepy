@@ -201,7 +201,7 @@ footer{
 </div>
 
 <script>
-// Particle System – yıldızlar ve devasa efektler
+// Particle System – yıldızlar ve galaksi
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let W = canvas.width = window.innerWidth;
@@ -261,7 +261,7 @@ window.addEventListener('resize', ()=>{
   H=canvas.height=window.innerHeight;
 });
 
-// Python dosyasını indir – CMD kapanmadan açılması için input() eklendi
+// Python dosyasını indir – CMD kapanmadan bekletir
 document.getElementById('downloadBtn').addEventListener('click', ()=>{
   const pyCode = `print("Kaplumbağa Oyunu başladı!")\ninput("Çıkmak için Enter'a basın...")`;
   const blob = new Blob([pyCode], {type:'text/plain'});
