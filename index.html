@@ -23,21 +23,20 @@
                 radial-gradient(1000px 500px at 90% 80%, rgba(20,40,80,0.35), transparent),
                 linear-gradient(180deg,var(--bg1),var(--bg2));
     color:#fff;
-    padding:0; /* tam ekran */
   }
 
   .stage{
     width:100%;
     height:100%; /* tam ekran */
-    border-radius:0; /* köşe yok, tam ekran */
+    border-radius:0;
     background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
     box-shadow:0 20px 60px rgba(2,6,20,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
     position:relative;
     overflow:hidden;
-    padding:36px;
     display:grid;
     grid-template-columns:1fr 420px;
     gap:28px;
+    padding:36px;
   }
 
   .left{
@@ -298,22 +297,6 @@ drawParticles();
 window.addEventListener('resize', ()=>{
   W=canvas.width=window.innerWidth;
   H=canvas.height=window.innerHeight;
-});
-
-// Buttons
-document.getElementById('downloadBtn').addEventListener('click',()=>{
-  const link = document.createElement('a');
-  link.href = 'Turtle.py';
-  link.download = 'Kaplumbaga_Oyunu.py';
-  link.click();
-});
-
-document.getElementById('otherGamesBtn').addEventListener('click',()=>{
-  document.getElementById('noGamesMsg').style.display='block';
-});
-
-document.getElementById('previewBtn').addEventListener('click',()=>{
-  document.getElementById('log').textContent='Önizleme başlatıldı...';
 });
 </script>
 </body>
